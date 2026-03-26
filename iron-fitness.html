@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Fitness — Forge Your Body</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --dark: #111111;
+    --card: #161616;
+    --orange: #FF4D00;
+    --orange-dim: #cc3d00;
+    --gold: #C9922A;
+    --white: #F5F5F5;
+    --gray: #888;
+    --border: rgba(255,77,0,0.15);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5%;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    color: var(--white);
+  }
+
+  .nav-logo span { color: var(--orange); }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+
+  .nav-cta {
+    background: var(--orange);
+    color: var(--black) !important;
+    padding: 0.5rem 1.4rem;
+    font-weight: 700 !important;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--orange-dim) !important; color: var(--white) !important; }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 26px; height: 2px; background: var(--white); transition: 0.3s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0 5%;
+    padding-top: 80px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(255,77,0,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,146,42,0.06) 0%, transparent 60%),
+      linear-gradient(135deg, #080808 0%, #0f0f0f 100%);
+  }
+
+  .hero-grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,77,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,77,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 700px;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    padding: 0.3rem 1rem;
+    margin-bottom: 1.5rem;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title .accent { color: var(--orange); display: block; }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2.2rem;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--orange-dim); transform: translateY(-2px); }
+
+  .btn-outline {
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2.2rem;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+
+  .hero-stats {
+    position: absolute; bottom: 3rem; right: 5%;
+    display: flex; gap: 3rem;
+    z-index: 2;
+  }
+
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 0.3rem;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: clamp(4rem, 8vw, 7rem) 5%; }
+
+  .section-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--gray);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--dark); }
+
+  .services-header { margin-bottom: 3.5rem; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5px;
+  }
+
+  .service-card {
+    background: var(--card);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+    cursor: default;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--orange);
+    transition: height 0.4s ease;
+  }
+
+  .service-card:hover { transform: translateY(-4px); }
+  .service-card:hover::before { height: 100%; }
+
+  .service-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+    color: var(--white);
+  }
+
+  .service-desc {
+    color: var(--gray);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* ── PLANS ── */
+  #plans { background: var(--black); }
+
+  .plans-header { margin-bottom: 3.5rem; }
+
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+  }
+
+  .plan-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  }
+
+  .plan-card:hover { border-color: var(--orange); transform: translateY(-4px); }
+
+  .plan-card.featured {
+    border-color: var(--orange);
+    background: linear-gradient(135deg, #1a0a00 0%, var(--card) 100%);
+  }
+
+  .plan-badge {
+    position: absolute; top: -1px; right: 30px;
+    background: var(--orange);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.25rem 0.8rem;
+  }
+
+  .plan-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--gray);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .plan-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .plan-price span {
+    font-family: 'Barlow', sans-serif;
+    font-size: 1rem;
+    color: var(--gray);
+    font-weight: 300;
+  }
+
+  .plan-price .currency {
+    font-size: 1.5rem;
+    vertical-align: top;
+    margin-top: 0.6rem;
+    display: inline-block;
+    color: var(--orange);
+  }
+
+  .plan-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .plan-features { list-style: none; margin-bottom: 2rem; }
+  .plan-features li {
+    padding: 0.5rem 0;
+    font-size: 0.92rem;
+    color: var(--gray);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .plan-features li::before {
+    content: '▸';
+    color: var(--orange);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .plan-btn {
+    display: block;
+    text-align: center;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    width: 100%;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .plan-btn:hover, .plan-card.featured .plan-btn {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: var(--black);
+  }
+
+  /* ── REGISTRATION FORM ── */
+  #register {
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #register::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,77,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .register-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    position: relative; z-index: 2;
+  }
+
+  .register-left .section-sub { margin-bottom: 2rem; }
+
+  .why-list { list-style: none; }
+  .why-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--gray);
+    font-weight: 300;
+  }
+  .why-icon {
+    color: var(--orange);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .form-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+  }
+
+  .form-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .form-group { margin-bottom: 1.2rem; }
+
+  .form-group label {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.85rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: #444; }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--orange);
+    background: rgba(255,77,0,0.04);
+  }
+
+  .form-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  .form-group select option { background: #1a1a1a; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--orange);
+    color: var(--black);
+    border: none;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 3px;
+    padding: 1rem;
+    cursor: pointer;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.2s;
+    margin-top: 0.5rem;
+  }
+  .submit-btn:hover { background: var(--orange-dim); transform: translateY(-2px); }
+
+  .form-privacy {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #555;
+    margin-top: 1rem;
+  }
+
+  /* SUCCESS STATE */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+  }
+  .success-msg .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .success-msg h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--orange);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .success-msg p { color: var(--gray); font-size: 0.95rem; font-weight: 300; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #050505;
+    border-top: 1px solid var(--border);
+    padding: 3rem 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+  }
+  .footer-logo span { color: var(--orange); }
+
+  .footer-copy {
+    font-size: 0.82rem;
+    color: #444;
+    font-weight: 300;
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--orange); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MOBILE NAV ── */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: #0d0d0d;
+      flex-direction: column;
+      padding: 1.5rem 5%;
+      gap: 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    .nav-cta { display: none; }
+
+    .hero-stats {
+      position: static;
+      justify-content: flex-start;
+      margin-top: 3rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .register-wrapper { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+
+    footer { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">IRON <span>FITNESS</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#plans">Plans</a></li>
+    <li><a href="#register" class="nav-cta">Join Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">⚡ Where Champions Are Built</div>
+    <h1 class="hero-title">
+      FORGE
+      <span class="accent">YOUR</span>
+      BODY
+    </h1>
+    <p class="hero-sub">
+      Iron Fitness — jahaan sirf commitment chahiye. State-of-the-art equipment, expert trainers, aur aik community jo tumhein push kare har din.
+    </p>
+    <div class="hero-btns">
+      <a href="#register" class="btn-primary">Register Now — Free Trial</a>
+      <a href="#plans" class="btn-outline">View Plans</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Active Members</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Expert Trainers</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5★</div>
+      <div class="stat-label">Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <span class="section-tag">What We Offer</span>
+    <h2 class="section-title">OUR SERVICES</h2>
+    <p class="section-sub">Professional training programs designed for every fitness level — beginner se leke advanced tak.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">🏋️</span>
+      <div class="service-name">Weight Training</div>
+      <p class="service-desc">Full-equipped weight room with barbells, dumbbells, machines — muscle gain ke liye complete setup.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🔥</span>
+      <div class="service-name">Personal Training</div>
+      <p class="service-desc">One-on-one sessions apne certified trainer ke saath. Custom plan, custom results.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🥊</span>
+      <div class="service-name">Boxing / MMA</div>
+      <p class="service-desc">Combat fitness classes — cardio, strength, aur self-defense ek saath.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🧘</span>
+      <div class="service-name">Yoga & Recovery</div>
+      <p class="service-desc">Flexibility, mobility, aur mental clarity ke liye dedicated yoga sessions.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🏃</span>
+      <div class="service-name">Cardio Zone</div>
+      <p class="service-desc">Treadmills, cycles, ellipticals — fat burn aur stamina building ke liye.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🥗</span>
+      <div class="service-name">Nutrition Guidance</div>
+      <p class="service-desc">Certified nutritionist se personalized diet plan — gym ke baad ka results ghar mein bhi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section id="plans">
+  <div class="plans-header reveal">
+    <span class="section-tag">Membership</span>
+    <h2 class="section-title">CHOOSE YOUR PLAN</h2>
+    <p class="section-sub">Koi hidden charges nahi. Jo plan lo, usi mein full access milta hai.</p>
+  </div>
+
+  <div class="plans-grid">
+    <div class="plan-card reveal">
+      <div class="plan-name">Monthly</div>
+      <div class="plan-price">
+        <span class="currency">Rs</span>3,500<span>/month</span>
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Gym Access (6 days/week)</li>
+        <li>Locker Facility</li>
+        <li>Basic Fitness Assessment</li>
+        <li>Group Classes</li>
+      </ul>
+      <button class="plan-btn" onclick="selectPlan('Monthly — Rs 3,500')">Select Plan</button>
+    </div>
+
+    <div class="plan-card featured reveal">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Quarterly</div>
+      <div class="plan-price">
+        <span class="currency">Rs</span>9,000<span>/3 months</span>
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Gym Access (6 days/week)</li>
+        <li>Locker + Towel Service</li>
+        <li>Full Fitness Assessment</li>
+        <li>Group Classes</li>
+        <li>1 Personal Training Session/month</li>
+        <li>Nutrition Consultation</li>
+      </ul>
+      <button class="plan-btn" onclick="selectPlan('Quarterly — Rs 9,000')">Select Plan</button>
+    </div>
+
+    <div class="plan-card reveal">
+      <div class="plan-name">Yearly</div>
+      <div class="plan-price">
+        <span class="currency">Rs</span>30,000<span>/year</span>
+      </div>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Unlimited Gym Access</li>
+        <li>All Amenities Included</li>
+        <li>4 Personal Training Sessions/month</li>
+        <li>Custom Nutrition Plan</li>
+        <li>Priority Booking</li>
+        <li>Guest Pass (2/month)</li>
+      </ul>
+      <button class="plan-btn" onclick="selectPlan('Yearly — Rs 30,000')">Select Plan</button>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRATION -->
+<section id="register">
+  <div class="register-wrapper">
+    <div class="register-left reveal">
+      <span class="section-tag">Join Iron Fitness</span>
+      <h2 class="section-title">START YOUR<br><span style="color:var(--orange)">JOURNEY</span></h2>
+      <p class="section-sub">Aaj register karo aur pehla hafta FREE trial lo. Koi commitment nahi — sirf results.</p>
+
+      <ul class="why-list" style="margin-top:2rem">
+        <li>
+          <span class="why-icon">⚡</span>
+          <span>24 hours ke andar confirmation milegi</span>
+        </li>
+        <li>
+          <span class="why-icon">🎯</span>
+          <span>First week completely free — koi payment nahi</span>
+        </li>
+        <li>
+          <span class="why-icon">💪</span>
+          <span>Expert trainer se free orientation session</span>
+        </li>
+        <li>
+          <span class="why-icon">🔒</span>
+          <span>Koi lock-in nahi — kabhi bhi cancel karo</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-box reveal" id="formBox">
+      <h3 class="form-title">REGISTER NOW</h3>
+      <p class="form-subtitle">Apni details fill karo — hum aap se contact karenge</p>
+
+      <div id="regForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Pehla Naam</label>
+            <input type="text" id="fname" placeholder="e.g. Ahmed">
+          </div>
+          <div class="form-group">
+            <label>Doosra Naam</label>
+            <input type="text" id="lname" placeholder="e.g. Khan">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="03XX-XXXXXXX">
+        </div>
+
+        <div class="form-group">
+          <label>Email (Optional)</label>
+          <input type="email" id="email" placeholder="yourname@gmail.com">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="age" placeholder="e.g. 22" min="10" max="80">
+          </div>
+          <div class="form-group">
+            <label>Gender</label>
+            <select id="gender">
+              <option value="">Select</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Fitness Goal</label>
+          <select id="goal">
+            <option value="">Select Goal</option>
+            <option>Weight Loss</option>
+            <option>Muscle Building</option>
+            <option>General Fitness</option>
+            <option>Athletic Performance</option>
+            <option>Rehabilitation / Injury Recovery</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Membership Plan</label>
+          <select id="plan">
+            <option value="">Select Plan</option>
+            <option>Monthly — Rs 3,500</option>
+            <option>Quarterly — Rs 9,000</option>
+            <option>Yearly — Rs 30,000</option>
+            <option>Free Trial (1 Week)</option>
+          </select>
+        </div>
+
+        <button class="submit-btn" onclick="submitForm()">SUBMIT REGISTRATION →</button>
+        <p class="form-privacy">🔒 Tumhari information safe hai — kisi ke saath share nahi hogi</p>
+      </div>
+
+      <div class="success-msg" id="successMsg">
+        <div class="success-icon">🔥</div>
+        <h3>YOU'RE IN!</h3>
+        <p>Tumhari registration mil gayi. Hum <strong>24 hours</strong> ke andar tumse contact karenge.<br><br>Welcome to Iron Fitness — ab koi excuse nahi!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">IRON <span>FITNESS</span></div>
+  <div class="footer-copy">© 2026 Iron Fitness. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#plans">Plans</a>
+    <a href="#register">Join</a>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Plan button → auto-select in form
+  function selectPlan(planName) {
+    document.getElementById('plan').value = planName;
+    document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Form submission
+  function submitForm() {
+    const fname = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const goal  = document.getElementById('goal').value;
+    const plan  = document.getElementById('plan').value;
+
+    if (!fname || !phone || !goal || !plan) {
+      alert('Please fill in all required fields (Name, Phone, Goal, Plan)');
+      return;
+    }
+
+    if (phone.length < 10) {
+      alert('Please enter a valid phone number');
+      return;
+    }
+
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+
+    // Scroll to success
+    document.getElementById('formBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
+</body>
+</html>
